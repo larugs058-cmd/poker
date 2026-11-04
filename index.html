@@ -4,135 +4,685 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Texas Hold'em Poker</title>
+<title>Royal Poker - Texas Hold'em</title>
+
 <style>
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
-  background: #101713;
+  background: #090e0d;
   color: white;
   font-family: Arial, sans-serif;
-  text-align: center;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
+
 header {
+  height: 65px;
+  background: #080b09;
+  border-bottom: 1px solid #94713a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+}
+
+.logo {
+  color: #e9c276;
+  font-size: 23px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.balance {
+  color: #e9c276;
+  font-weight: bold;
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
   padding: 20px;
-  background: #080d0a;
 }
-h1 { color: #e8c66a; }
+
+.table-area {
+  position: relative;
+  width: 100%;
+  max-width: 1050px;
+  height: 620px;
+  margin: 15px auto;
+}
+
 .table {
-  background: radial-gradient(ellipse, #23734b, #10402c);
-  border: 12px solid #51351f;
-  border-radius: 45%;
-  max-width: 850px;
-  min-height: 390px;
-  margin: 30px auto;
-  padding: 35px 15px;
-  box-shadow: 0 10px 30px #000;
+  position: absolute;
+  width: 94%;
+  height: 75%;
+  left: 3%;
+  top: 12%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse, #17633f 0%, #105033 65%, #083522 100%);
+  border: 16px solid #302019;
+  outline: 3px solid #b58b48;
+  box-shadow:
+    0 0 0 5px #17100b,
+    0 0 30px #d59b39,
+    inset 0 0 35px #001d11;
 }
+
+.table::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 2px solid #a57d3d;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.seat {
+  position: absolute;
+  z-index: 3;
+  width: 190px;
+  padding: 12px;
+  background: linear-gradient(145deg,#171d19,#080c0a);
+  border: 1px solid #9b783d;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 18px #0009;
+}
+
+.seat h3 {
+  margin: 3px 0 5px;
+  color: #f1d18b;
+}
+
+.seat p {
+  margin: 5px;
+  color: #e3c078;
+  font-weight: bold;
+}
+
+.seat .status {
+  color: #a9c2ad;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.top-seat {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.left-seat {
+  top: 44%;
+  left: -1%;
+}
+
+.right-seat {
+  top: 44%;
+  right: -1%;
+}
+
+.player-seat {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+}
+
 .cards {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 20px 0;
+  gap: 7px;
+  min-height: 88px;
+  align-items: center;
 }
+
 .card {
-  background: #fff;
-  color: #171717;
-  width: 62px;
-  height: 88px;
+  width: 55px;
+  height: 79px;
   border-radius: 7px;
+  background: linear-gradient(145deg,#fff,#e8e1d4);
+  color: #171717;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 23px;
   font-weight: bold;
-  box-shadow: 0 3px 5px #0006;
+  box-shadow: 0 4px 8px #0007;
+  border: 1px solid #ddd;
 }
-.red { color: #d21d35; }
+
+.card small {
+  font-size: 15px;
+}
+
+.red { color: #d52232; }
+
 .back {
-  background: repeating-linear-gradient(45deg,#173d75,#173d75 5px,#fff 5px,#fff 7px);
-  border: 3px solid white;
+  background: repeating-linear-gradient(
+    45deg,#8b1d29,#8b1d29 5px,#d7b5a2 5px,#d7b5a2 7px
+  );
+  border: 3px solid #eee0c9;
+  color: transparent;
 }
-.player {
-  margin: 15px auto;
-  padding: 12px;
-  max-width: 650px;
-  background: #202c25;
-  border: 1px solid #48614f;
-  border-radius: 12px;
+
+.center {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  z-index: 2;
 }
-button {
-  padding: 13px 24px;
-  margin: 10px;
-  border: 0;
-  border-radius: 8px;
-  background: #e4bd57;
-  color: #171717;
+
+.center h2 {
+  font-size: 17px;
+  color: #f0d49a;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 5px black;
+}
+
+#board {
+  margin: 10px 0;
+  min-height: 90px;
+}
+
+.pot {
+  display: inline-block;
+  background: #111812;
+  color: #f1cb79;
+  border: 1px solid #c69b50;
+  padding: 10px 27px;
+  border-radius: 30px;
+  font-weight: bold;
+  box-shadow: 0 3px 10px #0008;
+  margin-top: 12px;
+}
+
+.chips {
+  color: #eac879;
+  font-size: 13px;
+}
+
+.controls {
+  text-align: center;
+  margin: 5px auto 25px;
+}
+
+.controls button {
+  padding: 14px 28px;
+  margin: 6px;
+  border-radius: 9px;
+  border: 1px solid #b78c4a;
+  background: linear-gradient(145deg,#30271a,#17130e);
+  color: white;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 16px;
+  transition: .2s;
 }
-button:hover { background: #ffdc79; }
-#result {
-  color: #f3d477;
-  font-size: 21px;
+
+.controls button:hover {
+  background: #a77a36;
+  transform: translateY(-2px);
+}
+
+.controls .gold {
+  background: linear-gradient(145deg,#e9c77f,#a87932);
+  color: #17110a;
+}
+
+.controls button:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#message {
+  text-align: center;
+  color: #f0d18c;
+  font-size: 18px;
   font-weight: bold;
-  margin: 20px;
+  min-height: 27px;
 }
-.small { color: #c6d1c8; font-size: 14px; }
+
+#round {
+  color: #b8c7ba;
+  text-align: center;
+  font-size: 13px;
+}
+
+@media(max-width:650px) {
+  main { padding: 8px; }
+
+  .table-area {
+    height: 490px;
+    margin-top: 15px;
+  }
+
+  .table {
+    height: 67%;
+    top: 16%;
+    border-width: 9px;
+  }
+
+  .seat {
+    width: 130px;
+    padding: 7px;
+  }
+
+  .seat h3 { font-size: 13px; }
+  .seat p { font-size: 12px; }
+
+  .top-seat { top: 0; }
+  .left-seat { left: -2%; top: 43%; }
+  .right-seat { right: -2%; top: 43%; }
+
+  .player-seat {
+    width: 155px;
+    bottom: 0;
+  }
+
+  .card {
+    width: 39px;
+    height: 59px;
+    font-size: 17px;
+  }
+
+  .cards { gap: 3px; min-height: 65px; }
+
+  .center { top: 37%; }
+  .center h2 { font-size: 12px; }
+
+  .controls button {
+    padding: 12px 15px;
+    font-size: 13px;
+    margin: 3px;
+  }
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>♠ TEXAS HOLD'EM ♥</h1>
-<p>Een pokerhand-simulator</p>
+  <div class="logo">♠ ROYAL POKER</div>
+  <div class="balance" id="balance">Fiches: 1.000</div>
 </header>
 
 <main>
-<div class="table">
-<h2>Gemeenschappelijke kaarten</h2>
-<div id="board" class="cards"></div>
-<p class="small">Deze vijf kaarten zijn voor alle spelers beschikbaar.</p>
+
+<div class="table-area">
+
+  <div class="table"></div>
+
+  <div class="seat top-seat">
+    <h3>Computer 1</h3>
+    <div class="cards" id="bot1cards"></div>
+    <p id="bot1money">1.000 fiches</p>
+    <div class="status" id="bot1status">Speelt mee</div>
+  </div>
+
+  <div class="seat left-seat">
+    <h3>Jij</h3>
+    <div class="cards" id="playercards"></div>
+    <p id="playermoney">1.000 fiches</p>
+    <div class="status" id="playerstatus">Jouw beurt</div>
+  </div>
+
+  <div class="seat right-seat">
+    <h3>Computer 2</h3>
+    <div class="cards" id="bot2cards"></div>
+    <p id="bot2money">1.000 fiches</p>
+    <div class="status" id="bot2status">Speelt mee</div>
+  </div>
+
+  <div class="center">
+    <h2>GEMEENSCHAPPELIJKE KAARTEN</h2>
+    <div class="cards" id="board"></div>
+    <div class="pot" id="pot">POT: 0 fiches</div>
+  </div>
+
+  <div class="seat player-seat">
+    <h3>Jouw kaarten</h3>
+    <div class="cards" id="mycards"></div>
+    <p id="myhand">Texas Hold'em</p>
+  </div>
+
 </div>
 
-<div class="player">
-<h2>Jij</h2>
-<div id="you" class="cards"></div>
-<p id="youRank">Wacht op een nieuwe ronde...</p>
+<div id="round">Nieuwe ronde</div>
+<div id="message">Welkom aan de pokertafel!</div>
+
+<div class="controls">
+  <button id="check" onclick="checkCall()">CHECK / CALL</button>
+  <button class="gold" id="raise" onclick="raiseBet()">RAISE +40</button>
+  <button id="fold" onclick="fold()">FOLD</button>
+  <button id="next" class="gold" onclick="newHand()" hidden>
+    NIEUWE RONDE
+  </button>
 </div>
 
-<div class="player">
-<h2>Computer speler 1</h2>
-<div id="bot1" class="cards"></div>
-<p id="rank1"></p>
-</div>
-
-<div class="player">
-<h2>Computer speler 2</h2>
-<div id="bot2" class="cards"></div>
-<p id="rank2"></p>
-</div>
-
-<div id="result">Klik op Nieuwe ronde!</div>
-<button onclick="newRound()">Nieuwe ronde</button>
-<p class="small">Dit is een simulatie met punten, zonder echt geld of inzetten.</p>
 </main>
 
 <script>
-const suits = [
-  {symbol:"♠", color:"black"},
-  {symbol:"♥", color:"red"},
-  {symbol:"♦", color:"red"},
-  {symbol:"♣", color:"black"}
-];
+const suits = ["♠","♥","♦","♣"];
+const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 
-const values = [
-  "2","3","4","5","6","7","8","9","10","J","Q","K","A"
-];
+let deck = [];
+let board = [];
+let players = [];
+let pot = 0;
+let currentBet = 20;
+let street = 0;
+let finished = false;
 
-const names = [
+const streets = ["FLOP","TURN","RIVER","SHOWDOWN"];
+
+function createDeck() {
+  deck = [];
+
+  for (let suit of suits) {
+    for (let i=0; i<values.length; i++) {
+      deck.push({
+        value:i+2,
+        label:values[i],
+        suit:suit,
+        color:(suit==="♥" || suit==="♦") ? "red":"black"
+      });
+    }
+  }
+
+  for(let i=deck.length-1;i>0;i--) {
+    let j=Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]]=[deck[j],deck[i]];
+  }
+}
+
+function deal() {
+  return deck.pop();
+}
+
+function renderCards(id,cards,hidden=false) {
+  document.getElementById(id).innerHTML=cards.map(c=>{
+    if(hidden) return '<div class="card back">?</div>';
+
+    return `<div class="card ${c.color}">
+      ${c.label}<small>${c.suit}</small>
+    </div>`;
+  }).join("");
+}
+
+function updateUI() {
+  document.getElementById("balance").textContent =
+    "Fiches: "+players[0].money.toLocaleString("nl-NL");
+
+  document.getElementById("playermoney").textContent =
+    players[0].money.toLocaleString("nl-NL")+" fiches";
+
+  document.getElementById("bot1money").textContent =
+    players[1].money.toLocaleString("nl-NL")+" fiches";
+
+  document.getElementById("bot2money").textContent =
+    players[2].money.toLocaleString("nl-NL")+" fiches";
+
+  document.getElementById("pot").textContent =
+    "POT: "+pot.toLocaleString("nl-NL")+" fiches";
+
+  document.getElementById("bot1status").textContent =
+    players[1].folded ? "Gepast":"Speelt mee";
+
+  document.getElementById("bot2status").textContent =
+    players[2].folded ? "Gepast":"Speelt mee";
+
+  document.getElementById("playerstatus").textContent =
+    players[0].folded ? "Gepast":"Jouw beurt";
+
+  renderCards("board",board);
+  renderCards("mycards",players[0].cards);
+
+  renderCards("bot1cards",players[1].cards, !finished);
+  renderCards("bot2cards",players[2].cards, !finished);
+
+  document.getElementById("check").disabled=finished;
+  document.getElementById("raise").disabled=finished;
+  document.getElementById("fold").disabled=finished;
+  document.getElementById("next").hidden=!finished;
+}
+
+function contribute(player,amount) {
+  let paid=Math.min(amount,player.money);
+  player.money-=paid;
+  player.roundBet+=paid;
+  pot+=paid;
+}
+
+function newHand() {
+  if(players.length===0) {
+    players=[
+      {name:"Jij",money:1000,cards:[],folded:false,roundBet:0},
+      {name:"Computer 1",money:1000,cards:[],folded:false,roundBet:0},
+      {name:"Computer 2",money:1000,cards:[],folded:false,roundBet:0}
+    ];
+  }
+
+  if(players.every(p=>p.money===0)) {
+    document.getElementById("message").textContent =
+      "Geen fiches meer. Start de pagina opnieuw.";
+    return;
+  }
+
+  finished=false;
+  pot=0;
+  currentBet=20;
+  street=0;
+  board=[];
+
+  createDeck();
+
+  players.forEach(p=>{
+    p.cards=[deal(),deal()];
+    p.folded=p.money===0;
+    p.roundBet=0;
+  });
+
+  // Kleine en grote blind
+  contribute(players[1],10);
+  contribute(players[2],20);
+
+  // De flop
+  board=[deal(),deal(),deal()];
+
+  document.getElementById("message").textContent =
+    "Jij bent aan de beurt. Kies je actie.";
+
+  document.getElementById("round").textContent =
+    "RONDE: FLOP";
+
+  updateUI();
+}
+
+function checkCall() {
+  if(finished) return;
+
+  let needed=Math.max(0,currentBet-players[0].roundBet);
+
+  contribute(players[0],needed);
+
+  document.getElementById("message").textContent =
+    needed>0 ? "Je hebt gecalld." : "Je hebt gecheckt.";
+
+  botsAct();
+  advanceStreet();
+}
+
+function raiseBet() {
+  if(finished) return;
+
+  let target=currentBet+40;
+  let needed=target-players[0].roundBet;
+
+  if(needed<=0 || players[0].money===0) return;
+
+  contribute(players[0],needed);
+  currentBet=players[0].roundBet;
+
+  document.getElementById("message").textContent =
+    "Je verhoogt de inzet!";
+
+  botsAct();
+  advanceStreet();
+}
+
+function botsAct() {
+  for(let i=1;i<=2;i++) {
+    let p=players[i];
+
+    if(p.folded || p.money===0) continue;
+
+    let needed=currentBet-p.roundBet;
+
+    // Simpele computerstrategie
+    let strength=p.cards[0].value+p.cards[1].value;
+
+    if(strength<7 && Math.random()<0.15 && needed>0) {
+      p.folded=true;
+    } else {
+      contribute(p,needed);
+    }
+  }
+}
+
+function fold() {
+  if(finished) return;
+
+  players[0].folded=true;
+
+  let winner=players.find(p=>!p.folded);
+
+  if(!winner) {
+    finishHand("Niemand wint.");
+    return;
+  }
+
+  winner.money+=pot;
+
+  finishHand(winner.name+" wint de pot! Jij hebt gefold.");
+}
+
+function advanceStreet() {
+  if(players.filter(p=>!p.folded).length===1) {
+    let winner=players.find(p=>!p.folded);
+    winner.money+=pot;
+    finishHand(winner.name+" wint de pot!");
+    return;
+  }
+
+  players.forEach(p=>p.roundBet=0);
+  currentBet=0;
+
+  if(street===0) {
+    board.push(deal());
+    street=1;
+  } else if(street===1) {
+    board.push(deal());
+    street=2;
+  } else {
+    showdown();
+    return;
+  }
+
+  document.getElementById("round").textContent =
+    "RONDE: "+streets[street];
+
+  document.getElementById("message").textContent =
+    "De volgende kaarten zijn gedeeld. Jouw beurt!";
+
+  updateUI();
+}
+
+function combinations(cards) {
+  let result=[];
+
+  function pick(start,chosen) {
+    if(chosen.length===5) {
+      result.push(chosen);
+      return;
+    }
+
+    for(let i=start;i<cards.length;i++) {
+      pick(i+1,[...chosen,cards[i]]);
+    }
+  }
+
+  pick(0,[]);
+  return result;
+}
+
+function evaluateFive(cards) {
+  let vals=cards.map(c=>c.value).sort((a,b)=>b-a);
+  let counts={};
+
+  vals.forEach(v=>counts[v]=(counts[v]||0)+1);
+
+  let groups=Object.entries(counts)
+    .map(([v,n])=>({v:+v,n}))
+    .sort((a,b)=>b.n-a.n||b.v-a.v);
+
+  let flush=cards.every(c=>c.suit===cards[0].suit);
+
+  let unique=[...new Set(vals)];
+  if(unique[0]===14) unique.push(1);
+
+  let straight=0;
+
+  for(let i=0;i<=unique.length-5;i++) {
+    if(unique[i]-unique[i+4]===4) {
+      straight=unique[i];
+      break;
+    }
+  }
+
+  if(flush&&straight) return [8,straight];
+  if(groups[0].n===4) return [7,groups[0].v,groups[1].v];
+  if(groups[0].n===3&&groups[1].n===2)
+    return [6,groups[0].v,groups[1].v];
+  if(flush) return [5,...vals];
+  if(straight) return [4,straight];
+  if(groups[0].n===3) return [3,...groups.map(g=>g.v)];
+  if(groups[0].n===2&&groups[1].n===2)
+    return [2,groups[0].v,groups[1].v,groups[2].v];
+  if(groups[0].n===2) return [1,...groups.map(g=>g.v)];
+
+  return [0,...vals];
+}
+
+function evaluate(cards) {
+  let best=null;
+
+  for(let hand of combinations(cards)) {
+    let score=evaluateFive(hand);
+
+    if(!best||compare(score,best)>0) best=score;
+  }
+
+  return best;
+}
+
+function compare(a,b) {
+  for(let i=0;i<Math.max(a.length,b.length);i++) {
+    let diff=(a[i]||0)-(b[i]||0);
+    if(diff!==0) return diff;
+  }
+  return 0;
+}
+
+const handNames=[
   "Hoge kaart",
   "Paar",
   "Twee paar",
@@ -144,189 +694,47 @@ const names = [
   "Straight flush"
 ];
 
-let deck = [];
+function showdown() {
+  finished=true;
 
-function createDeck() {
-  deck = [];
-  for (const suit of suits) {
-    for (let i = 0; i < values.length; i++) {
-      deck.push({
-        value: i + 2,
-        label: values[i],
-        suit: suit.symbol,
-        color: suit.color
-      });
-    }
-  }
+  let active=players.filter(p=>!p.folded);
+  let scores=active.map(p=>({
+    player:p,
+    score:evaluate([...p.cards,...board])
+  }));
 
-  for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
-  }
-}
-
-function deal() {
-  return deck.pop();
-}
-
-function showCards(id, cards) {
-  document.getElementById(id).innerHTML = cards.map(card =>
-    `<div class="card ${card.color === "red" ? "red" : ""}">
-      ${card.label}${card.suit}
-    </div>`
-  ).join("");
-}
-
-// Maak alle mogelijke combinaties van vijf kaarten.
-function combinations(cards) {
-  const result = [];
-
-  function choose(start, chosen) {
-    if (chosen.length === 5) {
-      result.push(chosen);
-      return;
-    }
-
-    for (let i = start; i < cards.length; i++) {
-      choose(i + 1, [...chosen, cards[i]]);
-    }
-  }
-
-  choose(0, []);
-  return result;
-}
-
-function evaluateFive(cards) {
-  const sorted = cards.map(c => c.value).sort((a,b) => b-a);
-  const counts = {};
-
-  sorted.forEach(v => counts[v] = (counts[v] || 0) + 1);
-
-  const groups = Object.entries(counts)
-    .map(([v, count]) => ({value:Number(v), count}))
-    .sort((a,b) => b.count-a.count || b.value-a.value);
-
-  const flush = cards.every(c => c.suit === cards[0].suit);
-
-  let unique = [...new Set(sorted)];
-  if (unique[0] === 14) unique.push(1);
-
-  let straightHigh = 0;
-  for (let i = 0; i <= unique.length - 5; i++) {
-    if (unique[i] - unique[i+4] === 4) {
-      straightHigh = unique[i];
-      break;
-    }
-  }
-
-  if (flush && straightHigh)
-    return [8, straightHigh];
-
-  if (groups[0].count === 4)
-    return [7, groups[0].value, groups[1].value];
-
-  if (groups[0].count === 3 && groups[1].count === 2)
-    return [6, groups[0].value, groups[1].value];
-
-  if (flush)
-    return [5, ...sorted];
-
-  if (straightHigh)
-    return [4, straightHigh];
-
-  if (groups[0].count === 3)
-    return [3, ...groups.map(g => g.value)];
-
-  if (groups[0].count === 2 && groups[1].count === 2)
-    return [2, groups[0].value, groups[1].value,
-      groups[2].value];
-
-  if (groups[0].count === 2)
-    return [1, ...groups.map(g => g.value)];
-
-  return [0, ...sorted];
-}
-
-function evaluate(cards) {
-  let best = null;
-
-  for (const hand of combinations(cards)) {
-    const score = evaluateFive(hand);
-
-    if (!best || compare(score, best) > 0) {
-      best = score;
-    }
-  }
-
-  return best;
-}
-
-function compare(a, b) {
-  for (let i = 0; i < Math.max(a.length,b.length); i++) {
-    const difference = (a[i] || 0) - (b[i] || 0);
-    if (difference !== 0) return difference;
-  }
-  return 0;
-}
-
-function newRound() {
-  createDeck();
-
-  const players = [
-    [deal(), deal()],
-    [deal(), deal()],
-    [deal(), deal()]
-  ];
-
-  const board = [
-    deal(), deal(), deal(), deal(), deal()
-  ];
-
-  showCards("board", board);
-  showCards("you", players[0]);
-  showCards("bot1", players[1]);
-  showCards("bot2", players[2]);
-
-  const scores = players.map(hand =>
-    evaluate([...hand, ...board])
+  let best=scores.reduce((a,b)=>
+    compare(a.score,b.score)>=0?a:b
   );
 
-  document.getElementById("youRank").textContent =
-    "Jouw hand: " + names[scores[0][0]];
+  let winners=scores.filter(s=>compare(s.score,best.score)===0);
 
-  document.getElementById("rank1").textContent =
-    "Hand: " + names[scores[1][0]];
+  let share=Math.floor(pot/winners.length);
 
-  document.getElementById("rank2").textContent =
-    "Hand: " + names[scores[2][0]];
+  winners.forEach(w=>w.player.money+=share);
 
-  const best = Math.max(
-    ...scores.map(s => s[0])
+  document.getElementById("myhand").textContent =
+    players[0].folded ? "Gepast" :
+    handNames[evaluate([...players[0].cards,...board])[0]];
+
+  let names=winners.map(w=>w.player.name).join(" en ");
+
+  finishHand(
+    names+" wint met "+handNames[best.score[0]]+"!"
   );
-
-  const winners = scores
-    .map((score,index) => ({score,index}))
-    .filter(item => compare(item.score,
-      scores.reduce((a,b) => compare(a,b) >= 0 ? a : b)
-    ) === 0);
-
-  const bestScore = scores.reduce((a,b) =>
-    compare(a,b) >= 0 ? a : b
-  );
-
-  const winnerNames = winners.map(w =>
-    ["Jij", "Computer 1", "Computer 2"][w.index]
-  );
-
-  document.getElementById("result").textContent =
-    winnerNames.length > 1
-      ? "Gelijkspel: " + winnerNames.join(" en ")
-      : "Winnaar: " + winnerNames[0] +
-        " met " + names[bestScore[0]] + "!";
-
 }
 
-newRound();
+function finishHand(message) {
+  finished=true;
+
+  document.getElementById("message").textContent=message;
+  document.getElementById("round").textContent="RONDE AFGELOPEN";
+
+  updateUI();
+}
+
+newHand();
 </script>
+
 </body>
 </html>
